@@ -16,8 +16,8 @@
             </div>
         </div>
         <div class="menu">
-            <a href="{{ url('mostrar_equipo') }}">Mostrar Equipo</a>
             <a href="{{ url('ingresar_miembros') }}">Ingresar Miembros</a>
+            <a href="{{ url('mostrar_equipo') }}">Mostrar Equipo</a>
             <a href="{{ url('update') }}">Update</a>
             <a href="{{ url('delete') }}">Delete</a>
             <a href="{{ url('ticket') }}">Ticket</a>
