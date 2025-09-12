@@ -1,0 +1,15 @@
+[90m= [39m[
+    {#5363
+      +"[1mname[22m": "[32mmigrations[39m",
+    },
+    {#5365
+      +"[1mname[22m": "[32msqlite_sequence[39m",
+    },
+    {#5366
+      +"[1mname[22m": "[32mcache[39m",
+    },
+    {#5367
+      +"[1mname[22m": "[32mcache_locks[39m",
+    },
+  ]
+

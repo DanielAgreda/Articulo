@@ -1,0 +1,344 @@
+body {
+    background-color: #0e0e0e;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.background-aurora {
+    position: fixed; /* Ocupa toda la ventana de forma fija */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(0,255,255,0.3) 0%, transparent 30%),
+                radial-gradient(circle at 80% 20%, rgba(255,0,255,0.3) 0%, transparent 30%),
+                radial-gradient(circle at 50% 50%, rgba(0,255,0,0.2) 0%, transparent 40%),
+                linear-gradient(to top, #0a0e1a, #000000); /* Fondo oscuro principal */
+    background-size: 200% 200%; /* Tamaño más grande para permitir el movimiento */
+    animation: aurora-animation 30s ease-in-out infinite alternate; /* Animación de la aurora */
+    z-index: -1; /* Envía el fondo detrás del contenido */
+    filter: blur(5px) saturate(150%); /* Efecto de desenfoque y saturación */
+    opacity: 0.8; /* Ligeramente transparente para no distraer demasiado */
+}
+
+@keyframes aurora-animation {
+    0% {
+        background-position: 0% 0%, 100% 0%, 50% 50%, 0% 0%;
+    }
+    25% {
+        background-position: 50% 25%, 75% 100%, 0% 0%, 0% 0%;
+    }
+    50% {
+        background-position: 100% 50%, 0% 100%, 100% 0%, 0% 0%;
+    }
+    75% {
+        background-position: 25% 75%, 50% 0%, 25% 25%, 0% 0%;
+    }
+    100% {
+        background-position: 0% 0%, 100% 0%, 50% 50%, 0% 0%;
+    }
+}
+
+nav * { 
+    background-color: black; 
+    color: white; 
+}
+
+nav { 
+    text-align: center; 
+    background-color: black; 
+    display: flex; 
+    padding: 2%; 
+}
+
+.container_items{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+nav .container_menu { 
+    width: 100%; 
+}
+
+nav .botones_menu { 
+
+    align-items: flex-end;
+    justify-content: center; 
+}
+
+nav ul { 
+    padding: 0; 
+    list-style-type: none; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    background-color: black; 
+}
+
+nav #logo { 
+    display: flex; 
+    align-items: center; 
+    width: min-content; 
+}
+
+nav #logo img { 
+    height: 75px; 
+    width: 75px; 
+    margin-right: 10px; 
+}
+
+nav #logo h1 { 
+    margin: 0; 
+}
+
+nav #container_menu, nav #menu{ 
+    align-items: center; 
+}
+
+nav a { 
+    display: inline-block; 
+    padding: 5px; 
+    margin: 5px; 
+    text-decoration: none; 
+    color: white; 
+    transition: color 0.3s ease; 
+}
+
+nav a:hover { 
+    color: rgb(30, 63, 128); 
+}
+
+nav .button:hover { 
+    background-color: rgb(40, 83, 168); 
+    color: white; 
+}
+
+.content { 
+    padding: 2%; 
+    overflow: hidden; 
+    z-index: 1;
+}
+
+.button { 
+    width: 30%; 
+    display: inline; 
+    padding: 12px 35px; 
+    border-radius: 20px; 
+    background-color: rgb(30, 63, 128); 
+    color: white; 
+    text-decoration: none; 
+    justify-content: center; 
+    text-align: center; 
+    transition: background-color 0.3s ease; 
+}
+
+.button:hover { 
+    background-color: rgb(40, 83, 168); 
+}
+
+.titulos-decorados {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-decoration: underline;
+    text-decoration-color: rgb(30, 63, 128);
+    text-underline-offset: 5px;
+}
+
+#carreras {
+    width: 80%;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.carreras-lista {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+}
+
+.carrera-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: rgba(30, 63, 128, 0.1);
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 1;
+}
+
+.carrera-item:hover {
+    background-color: rgba(40, 83, 168, 0.3);
+    transform: scale(1.02);
+}
+
+.carrera-item span {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.carrera-item .fecha {
+    width: 25%;
+    text-align: left;
+}
+
+.carrera-item .nombre {
+    width: 50%;
+    text-align: center;
+}
+
+.carrera-item .pais {
+    width: 25%;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.carrera-item .pais img {
+    width: 30px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 3%;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer-contenido {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-seccion {
+    text-align: left;
+}
+
+.footer-seccion a{
+    text-decoration: none;
+    color: white;
+}
+
+.footer-seccion h3 {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+footer .footer-seccion a:hover{
+    text-decoration: underline;
+    color: white;
+    text-decoration-color: white;
+}
+
+.footer-seccion ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-seccion li {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+footer p {
+    margin-top: 20px;
+    font-size: 14px;
+    background-color: black;
+}
+
+footer p {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+@media (max-width: 768px){
+
+    nav {
+        padding: 20px;
+    }
+
+    nav .container_items {
+        display: flex;
+        flex-direction: row;
+        padding: 10px;
+    }
+
+    nav .botones_menu {
+        display: flex;
+        width: max-content;
+        flex-direction: column;
+    }
+
+    nav .button {
+        font-size: 14px;
+        justify-content: center;
+        width: 60%;
+    }
+
+    nav .menu {
+        padding: 15px;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .footer-seccion h3{
+        font-size: large;
+    }
+
+    .footer-seccion ul{
+        font-weight: 100;
+        font-size: 12px;
+    }
+
+}
+
+@media (max-width: 500px){
+
+    nav .menu {
+        font-size: 17px;
+    }
+
+    nav #logo h1,
+    nav #logo img{
+        width: 20%;
+        height: 20%;
+    }
+
+    nav .botones_menu{
+        width: 40%;
+        height: 40%;
+    }
+
+    nav .button{
+        align-items: center;
+        font-size: 12px;
+    }
+
+    #logo h1{
+        font-size: 25px;
+    }
+
+}
