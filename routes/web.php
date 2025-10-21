@@ -8,24 +8,23 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\CiclistaController;
+use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Aquí definimos todas las rutas de tu aplicación, agrupadas por
-| funcionalidad y middleware para que queden bien organizadas.
-|
+| Aquí definimos todas las rutas de tu aplicación,
+| ahora actualizadas con autenticación JWT.
+|--------------------------------------------------------------------------
 */
 
 /*
-|---------------------------------------------------------------------------
+|--------------------------------------------------------------------------
 | Rutas públicas
-|---------------------------------------------------------------------------
+|--------------------------------------------------------------------------
 */
 
-// Home y páginas estáticas del navbar
 Route::view('/',            'index')->name('home');
 Route::view('/carreras',    'carreras')->name('carreras');
 Route::view('/equipo',      'equipo')->name('equipo');
@@ -34,91 +33,69 @@ Route::view('/historia',    'historia')->name('historia');
 Route::view('/contacto',    'contacto')->name('contacto');
 
 // Procesar formulario de contacto
-Route::post('/contacto', [ContactController::class, 'store'])
-     ->name('contacto.store');
+Route::post('/contacto', [ContactController::class, 'store'])->name('contacto.store');
 
 /*
-|---------------------------------------------------------------------------
-| Autenticación
-|---------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+| Autenticación (JWT)
+|--------------------------------------------------------------------------
 |
-| Rutas que muestran los formularios de login/registro y
-| procesan los envíos correspondientes.
+| Login, registro y logout gestionados por JWT.
+| El middleware 'jwt.auth' se usará para proteger las rutas.
 |
 */
 
-// Mostrar formulario de login
-Route::get('/login', [AuthController::class, 'showLoginForm'])
-     ->name('login');
+// Formularios
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 
-// Procesar login
-Route::post('/login', [AuthController::class, 'login'])
-     ->name('login.submit');
+// Procesar login y registro
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
-// Mostrar formulario de registro
-Route::get('/register', [AuthController::class, 'showRegistrationForm'])
-     ->name('register');
-
-// Procesar registro
-Route::post('/register', [AuthController::class, 'register'])
-     ->name('register.submit');
-
-// Cerrar sesión
-Route::post('/logout', [AuthController::class, 'logout'])
-     ->name('logout');
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
-|---------------------------------------------------------------------------
-| Rutas protegidas (sólo usuarios autenticados)
-|---------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+| Rutas protegidas por JWT
+|--------------------------------------------------------------------------
 |
-| Dentro de este grupo todas las rutas requieren que el usuario
-| haya pasado el middleware 'auth'.
+| Solo se puede acceder con un token válido.
+| Usamos el middleware 'jwt.auth' proporcionado por tymon/jwt-auth.
 |
 */
 
-Route::middleware('auth')->group(function () {
-    // Dashboard de usuario: muestra usuario.blade.php
-    Route::get('/usuario', [UserController::class, 'dashboard'])
-         ->name('usuario');
-    // Dashboard de admin: muestra admin.blade.php
-    Route::get('/admin', [AdminController::class, 'dashboard'])
-         ->name('admin');
+Route::middleware(['jwt.auth'])->group(function () {
 
-    // Mostrar formulario
-    Route::get('/mostrar_equipo', [EquipoController::class, 'index'])
-         ->name('equipos.index');
+    // Dashboard de usuario
+    Route::get('/usuario', [UserController::class, 'dashboard'])->name('usuario');
 
-    // Procesar formulario
-    Route::post('/mostrar_equipo', [EquipoController::class, 'show'])
-         ->name('equipos.show');
+    // ✅ Dashboard de admin protegido con JWT
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin');
 
-    Route::get('/ingresar-miembros', [CiclistaController::class, 'create'])
-         ->name('ciclistas.create');
+    // Equipos
+    Route::get('/mostrar_equipo', [EquipoController::class, 'index'])->name('equipos.index');
+    Route::post('/mostrar_equipo', [EquipoController::class, 'show'])->name('equipos.show');
 
-    // Procesar envío
-    Route::post('/ingresar-miembros', [CiclistaController::class, 'store'])
-         ->name('ciclistas.store');
+    // Ciclistas
+    Route::get('/ingresar_miembros', [CiclistaController::class, 'create'])->name('ciclistas.create');
+    Route::post('/ingresar_miembros', [CiclistaController::class, 'store'])->name('ciclistas.store');
+    Route::get('/edit', [CiclistaController::class, 'edit'])->name('ciclistas.edit');
+    Route::put('/edit', [CiclistaController::class, 'update'])->name('ciclistas.update');
+    Route::get('/delete', [CiclistaController::class, 'delete'])->name('ciclistas.delete');
+    Route::delete('/delete', [CiclistaController::class, 'destroy'])->name('ciclistas.destroy');
 
-
-    // Ejemplo de CRUD de tickets (placeholders por ahora)
-    Route::get('/tickets', function () {
-        // Más adelante aquí listaremos tickets
-        return back();
-    })->name('tickets.index');
-
-    Route::post('/tickets', function (Request $request) {
-        // Placeholder: simula creación y retorna con mensaje
-        return redirect('/')
-               ->with('message', 'Tu ticket ha sido recibido (placeholder).');
-    })->name('tickets.store');
+    // Tickets
+    Route::get('/tickets', [TicketController::class, 'create'])->name('tickets.create');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
 });
 
 /*
-|---------------------------------------------------------------------------
-| Vistas planas de auth (si aún no migraste estas a controladores)
-|---------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+| Vistas planas de auth (opcional)
+|--------------------------------------------------------------------------
 */
 
-Route::view('/registro',      'auth.register')->name('registro');
+Route::view('/registro', 'auth.register')->name('registro');
 Route::view('/inicio-sesion', 'auth.login')->name('inicio-sesion');

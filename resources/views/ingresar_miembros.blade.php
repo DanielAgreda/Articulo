@@ -1,14 +1,12 @@
 @extends('layouts.user')
 
-@section('title', 'Registro de Ciclistas')
-
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/ingresar_miembros.css') }}">
 @endpush
 
+@section('title', 'Registro de Ciclistas')
+
 @section('content')
-    {{-- Fondo aurora animado --}}
-    <div class="background-aurora"></div>
 
     <div id="contenido">
         <div class="registro-container">

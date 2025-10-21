@@ -6,10 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
-    protected $table        = 'ticket';
-    protected $primaryKey   = 'id_ticket';
-    public    $incrementing = true;
-    public    $timestamps   = false;
-
-    protected $fillable = ['titulo','descripcion'];
+    protected $table = 'tickets';
+    protected $fillable = ['titulo','descripcion','user_id','estado'];
+    public $timestamps = true;
 }

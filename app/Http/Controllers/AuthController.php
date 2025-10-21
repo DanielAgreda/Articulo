@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    // Muestra el formulario de login
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
-    // Procesa el login
+    /**
+     * Login con JWT (solo admin o usuario)
+     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -23,27 +19,36 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
-            return back()->withErrors([
-                'email' => 'Credenciales inválidas.',
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
+        }
+
+        $user = auth()->user();
+
+        // Si quieres limitar el acceso al admin
+        if ($user->email === 'admin@gmail.com') {
+            return response()->json([
+                'message' => 'Bienvenido Administrador',
+                'role' => 'admin',
+                'token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
             ]);
         }
-        $user = Auth::user();
-        if ($user->email === 'admin@gmail.com') {
-            return redirect()->route('admin');
-        }
-        // Éxito: redirigir al dashboard de usuario
-        return redirect()->route('usuario');
+
+        // Usuario normal
+        return response()->json([
+            'message' => 'Inicio de sesión exitoso',
+            'role' => 'user',
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+        ]);
     }
 
-
-    // Muestra el formulario de registro
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
-    }
-
-    // Procesa el registro
+    /**
+     * Registro con JWT
+     */
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -58,16 +63,43 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        Auth::login($user);
-        return redirect('/');
+        // Generar token JWT automáticamente
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json([
+            'message' => 'Usuario registrado exitosamente',
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 
-    // Logout
-    public function logout(Request $request)
+    /**
+     * Retorna información del usuario autenticado
+     */
+    public function me()
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
+        return response()->json(auth()->user());
+    }
+
+    /**
+     * Logout (invalida el token actual)
+     */
+    public function logout()
+    {
+        auth()->logout();
+        return response()->json(['message' => 'Sesión cerrada correctamente']);
+    }
+
+    /**
+     * Refrescar el token JWT
+     */
+    public function refresh()
+    {
+        return response()->json([
+            'access_token' => auth()->refresh(),
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+        ]);
     }
 }
+

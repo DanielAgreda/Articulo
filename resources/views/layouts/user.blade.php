@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard de Usuario')</title>
     <link rel="stylesheet" href="{{ asset('css/usuario.css') }}">
+    @stack('styles')
 </head>
 <body>
+
+    {{-- Fondo aurora animado --}}
+    <div class="background-aurora"></div>
 
     {{-- Header específico de usuario --}}
     @include('partials.user-header')

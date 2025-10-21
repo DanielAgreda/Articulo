@@ -10,6 +10,7 @@
     @stack('styles')
 </head>
 <body>
+    {{-- Fondo aurora animado --}}
     <div class="background-aurora"></div>
 
     {{-- Header público --}}
